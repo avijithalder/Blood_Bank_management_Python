@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodNest Inventory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff7eb3, #65c7f7, #0052d4);
+            color: #333;
+            animation: gradientFlow 8s infinite alternate ease-in-out;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Glowing Animation for Title */
+        h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: slideIn 1.5s ease-out, glowEffect 1.5s infinite alternate;
+        }
+
+        @keyframes glowEffect {
+            0% {
+                text-shadow: 0 0 5px #ff4b5c, 0 0 10px #ff4b5c, 0 0 15px #ff4b5c, 0 0 20px #ff4b5c;
+            }
+
+            50% {
+                text-shadow: 0 0 10px #ff4b5c, 0 0 20px #ff4b5c, 0 0 30px #ff4b5c, 0 0 40px #ff4b5c;
+            }
+
+            100% {
+                text-shadow: 0 0 5px #ff4b5c, 0 0 10px #ff4b5c, 0 0 15px #ff4b5c, 0 0 20px #ff4b5c;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Table Styles */
+        table {
+            width: 80%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 1.1rem;
+        }
+
+        th {
+            background: linear-gradient(135deg, #ff4b5c, #ff758c);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(240, 248, 255, 0.7);
+        }
+
+        tr:hover {
+            background: #f9ed69;
+            color: #333;
+            transform: scale(1.05);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Inventory Section */
+        #inventorySection {
+            padding: 40px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: slideIn 1.5s ease-out;
+            flex-grow: 1;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #ff4b5c;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: white;
+            font-size: 1rem;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Button Styles */
+        .options {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .options button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            color: white;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .options button:hover {
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>BloodNest Inventory</h1>
+    </header>
+
+    <section id="inventorySection" class="container">
+        <h2>Blood Type Inventory</h2>
+        <table>
+            <tr>
+                <th>Blood Type</th>
+                <th>Quantity</th>
+            </tr>
+            {% for blood_type, quantity in inventory_data %}
+            <tr>
+                <td>{{ blood_type }}</td>
+                <td>{{ quantity }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 BloodNest. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

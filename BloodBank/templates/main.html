@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodNest Blood Bank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <style>
+        /* Body Style */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff7eb3, #65c7f7, #0052d4); /* Gradient background */
+            color: #333; /* Dark text for readability */
+            margin: 0;
+            padding: 0;
+            animation: gradientFlow 8s infinite alternate ease-in-out; /* Smooth transition for background */
+        }
+
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            padding: 40px;
+            background-color: #004d7a; /* Subtle dark blue */
+            color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 36px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        /* Main Section */
+        #mainSection {
+            text-align: center;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.3); /* More transparent white */
+            border-radius: 8px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        #mainSection h2 {
+            font-size: 28px;
+            margin-bottom: 40px;
+            color: #004d7a;
+        }
+
+        .options button {
+            padding: 20px 40px;
+            font-size: 18px;
+            background-color: #006bb3; /* Soft blue */
+            border: none;
+            border-radius: 25px;
+            margin: 10px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .options button:hover {
+            transform: scale(1.05);
+            background-color: #004d7a; /* Darker blue when hovering */
+        }
+
+        /* Footer Style */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #004d7a;
+            color: #ffffff;
+            margin-top: 40px;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        footer p {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to BloodNest Blood Bank</h1>
+    </header>
+
+    <section class="container section" id="mainSection">
+        <h2>Choose an Option</h2>
+        <div class="options">
+            <button onclick="window.location.href='/add_donor'">Add Donor Details</button>
+            <button onclick="window.location.href='/request_blood'">Request Blood</button>
+            <button onclick="window.location.href='/inventory'">View Inventory</button>
+            <button onclick="window.location.href='/donor_list'">Donor List</button>
+            <button onclick="window.location.href='/request_data'">Request List</button>
+            <button onclick="window.location.href='/update_inventory'">Update Stock</button>
+        </div>
+        <div class="options">
+           <button onclick="window.location.href='/admin'">Logout</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 BloodNest Blood Bank. All rights reserved.</p>
+    </footer>
+
+</body>
+
+</html>

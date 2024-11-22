@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Table</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff7eb3, #65c7f7, #0052d4);
+            color: #333;
+            animation: gradientFlow 8s infinite alternate ease-in-out;
+            overflow: auto; /* Allow scrolling both horizontally and vertically */
+        }
+
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            padding: 20px 0;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Table Container */
+        table {
+            width: 90%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            animation: slideIn 1.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        th {
+            background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        tr:nth-child(even) td {
+            background: rgba(240, 248, 255, 0.9);
+        }
+
+        tr:hover td {
+            background: #f9ed69;
+            color: #333;
+            transform: scale(1.02);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Modal Animation */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: fadeInModal 0.5s ease-out;
+        }
+
+        @keyframes fadeInModal {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .modal h3 {
+            margin-bottom: 20px;
+        }
+
+        .modal button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-yes {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-no {
+            background: #f44336;
+            color: white;
+        }
+
+        /* Overlay Animation */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9;
+            animation: fadeInOverlay 0.5s ease-out;
+        }
+
+        @keyframes fadeInOverlay {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Request Table</h1>
+    <table>
+        <thead>
+        <tr>
+<!--            <th>Request ID</th>-->
+            <th>Hospital Name</th>
+            <th>Patient Name</th>
+            <th>Patient Age</th>
+            <th>Patient Blood Type</th>
+            <th>Donor Name</th>
+            <th>Donor Age</th>
+            <th>Donor Blood Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if requests %}
+        {% for request in requests %}
+        <tr data-request-id="{{ request[0] }}" onclick="confirmDelete('{{ request[0] }}')">
+<!--            <td>{{ request[0] }}</td>-->
+            <td>{{ request[1] }}</td>
+            <td>{{ request[2] }}</td>
+            <td>{{ request[3] }}</td>
+            <td>{{ request[4] }}</td>
+            <td>{{ request[5] }}</td>
+            <td>{{ request[6] }}</td>
+            <td>{{ request[7] }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="8">No requests found.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="deleteModal">
+        <h3>Are you sure you want to delete this request?</h3>
+        <button class="btn-yes" onclick="deleteRequest()">Yes</button>
+        <button class="btn-no" onclick="closeModal()">No</button>
+    </div>
+
+    <script>
+        let currentRequestId = null;
+
+        function confirmDelete(requestId) {
+            currentRequestId = requestId;
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            currentRequestId = null;
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        function deleteRequest() {
+            if (currentRequestId) {
+                // Perform delete request using Fetch API
+                fetch(`/delete_request/${currentRequestId}`, { method: 'DELETE' })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        if (data.success) {
+                            // Remove the row from the table immediately without reloading the page
+                            const row = document.querySelector(`tr[data-request-id="${currentRequestId}"]`);
+                            if (row) {
+                                row.remove();
+                            }
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+            closeModal();
+        }
+    </script>
+</body>
+</html>

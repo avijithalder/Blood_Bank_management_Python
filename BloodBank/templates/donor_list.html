@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor List</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff7eb3, #65c7f7, #0052d4);
+            color: #333;
+            animation: gradientFlow 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            padding: 20px 0;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* Donor List Section */
+        .donor-list {
+            margin: 30px auto;
+            padding: 20px;
+            width: 90%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 1.5s ease-out;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+        }
+
+        tr:nth-child(even) td {
+            background: rgba(240, 248, 255, 0.9);
+        }
+
+        tr:hover td {
+            background: #f9ed69;
+            color: #333;
+            transform: scale(1.02);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            background-color: #ff7eb3;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+        }
+
+        .modal-content button:hover {
+            background-color: #ff758c;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+<!-- Header Section -->
+<header class="header">
+    <h1>Donor List</h1>
+</header>
+
+<!-- Donor List Section -->
+<section class="donor-list">
+    <table>
+        <thead>
+        <tr>
+<!--            <th>Donor ID</th>-->
+            <th>Donor Name</th>
+            <th>Donor Age</th>
+            <th>Donor Blood Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Loop through each donor and display their information -->
+        {% for donor in donors %}
+        <tr id="row-{{ donor[0] }}" onclick="confirmDelete({{ donor[0] }})">
+<!--            <td>{{ donor[0] }}</td>-->
+            <td>{{ donor[1] }}</td>
+            <td>{{ donor[2] }}</td>
+            <td>{{ donor[3] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to delete this donor?</p>
+        <button onclick="deleteDonor()">Yes</button>
+        <button onclick="closeModal()">No</button>
+    </div>
+</div>
+
+<script>
+    let donorIdToDelete = null;
+
+    function confirmDelete(donorId) {
+        donorIdToDelete = donorId;
+        document.getElementById("deleteModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("deleteModal").style.display = "none";
+    }
+
+    function deleteDonor() {
+        fetch(`/delete_donor/${donorIdToDelete}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                document.getElementById(`row-${donorIdToDelete}`).remove();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting donor.');
+        })
+        .finally(() => closeModal());
+    }
+</script>
+</body>
+
+</html>

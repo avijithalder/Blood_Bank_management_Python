@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Blood</title>
+    <style>
+        /* Body Style */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff7eb3, #65c7f7, #0052d4); /* Gradient background */
+            color: #333; /* Dark text for readability */
+            margin: 0;
+            padding: 0;
+            animation: gradientFlow 8s infinite alternate ease-in-out; /* Smooth transition for background */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            padding: 40px;
+            background-color: #004d7a; /* Subtle dark blue */
+            color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: headerFadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        /* Form Section */
+        .form-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1.5s ease-out;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            text-align: center;
+        }
+
+        .form-container h2 {
+            font-size: 28px;
+            color: #004d7a;
+            margin-bottom: 20px;
+            animation: slideInFromLeft 1s ease-out;
+        }
+
+        .form-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .form-section > div {
+            width: 48%; /* Create two equal sections */
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        /* Text Field Styles */
+        input[type="text"], input[type="number"], select {
+            width: 100%; /* Adjust width to be smaller */
+            padding: 10px;
+            font-size: 14px;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Adjusted styles for the blood type dropdown */
+        select {
+            width: 100%;
+            padding: 15px; /* Increased padding */
+            font-size: 18px; /* Larger font size */
+            height: 50px; /* Increased height */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Glowing effect when focused */
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            border-color: #004d7a;
+            box-shadow: 0 0 8px rgba(0, 77, 122, 0.7);
+            transform: translateY(-5px);
+        }
+
+        /* Submit Button */
+        input[type="submit"] {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #006bb3;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            transform: scale(1.1);
+            background-color: #004d7a;
+        }
+
+        /* Footer Style */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #004d7a;
+            color: #ffffff;
+            margin-top: 40px;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            animation: footerSlideIn 1s ease-out;
+        }
+
+        footer p {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        /* Footer Buttons - Common Style */
+        .action-buttons button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #006bb3;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            margin: 10px;
+        }
+
+        .action-buttons button:hover {
+            transform: scale(1.1);
+            background-color: #004d7a;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes headerFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes footerSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Request Blood</h1>
+    </header>
+
+ <div class="form-container">
+        <h2>Enter Request Information</h2>
+        <form id="bloodRequestForm" action="/request_blood" method="POST">
+            <div class="form-section">
+                <div>
+                    <h3>Patient Information</h3>
+                    <label for="hospital_name">Hospital Name:</label>
+                    <input type="text" id="hospital_name" name="hospital_name" required><br>
+
+                    <label for="patient_name">Patient Name:</label>
+                    <input type="text" id="patient_name" name="patient_name" required><br>
+
+                    <label for="patient_age">Patient Age:</label>
+                    <input type="number" id="patient_age" name="patient_age" required><br>
+
+                    <label for="patient_blood_type">Patient Blood Type:</label>
+                    <select id="patient_blood_type" name="patient_blood_type" required>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select><br>
+                </div>
+
+                <div>
+                    <h3>Donor Information</h3>
+                    <label for="donor_name">Donor Name:</label>
+                    <input type="text" id="donor_name" name="donor_name" required><br>
+
+                    <label for="donor_age">Donor Age:</label>
+                    <input type="number" id="donor_age" name="donor_age" required><br>
+
+                    <label for="donor_blood_type">Donor Blood Type:</label>
+                    <select id="donor_blood_type" name="donor_blood_type" required>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select><br>
+                </div>
+            </div>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+<!--    <footer>-->
+<!--        <p>Thank you for helping save lives!</p>-->
+<!--        <div class="action-buttons">-->
+<!--            <button onclick="window.location.href='/main'">Home</button>-->
+<!--            <button onclick="window.location.href='/request_data'">Request List</button>-->
+<!--        </div>-->
+<!--    </footer>-->
+
+    <script>
+        // JavaScript to check compatibility before form submission
+        document.getElementById("bloodRequestForm").onsubmit = function(event) {
+            // Get blood types from the form
+            var patientBloodType = document.getElementById("patient_blood_type").value;
+            var donorBloodType = document.getElementById("donor_blood_type").value;
+
+            // Blood compatibility check
+            var compatibility = {
+                'O-': ['O-', 'O+', 'A-', 'A+', 'B-', 'B+', 'AB-', 'AB+'],   // Universal donor
+                'O+': ['O+', 'A+', 'B+', 'AB+'],   // Universal donor (for Rh+ blood types)
+                'A-': ['A-', 'A+', 'AB-', 'AB+'],
+                'A+': ['A+', 'AB+'],
+                'B-': ['B-', 'B+', 'AB-', 'AB+'],
+                'B+': ['B+', 'AB+'],
+                'AB-': ['AB-', 'AB+'],
+                'AB+': ['AB+']   // Universal recipient
+            };
+
+            // Check if the donor's blood type is compatible with the patient's blood type
+            if (compatibility[patientBloodType].indexOf(donorBloodType) === -1) {
+                // If not compatible, show a popup message and prevent form submission
+                alert("Blood types are not compatible! Please select compatible blood types.");
+                event.preventDefault();  // Prevent form submission
+            }
+        };
+    </script>
+
+    <footer>
+        <p>Thank you for helping save lives!</p>
+        <div class="action-buttons">
+            <button onclick="window.location.href='/main'">Home</button>
+            <button onclick="window.location.href='/request_data'">Request List</button>
+
+        </div>
+    </footer>
+</body>
+</html>
+
